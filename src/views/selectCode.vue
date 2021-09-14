@@ -62,24 +62,35 @@
 
         <div class="rescode">
             <p>选号结果</p>
-            <span
-                :class="{
-                    code: true,
-                    red: item.color === '红',
-                    green: item.color === '绿',
-                    blue: item.color === '蓝',
-                }"
-                v-for="item in rescode"
-                :key="item.number"
-            >
-                {{ item.number }}
-            </span>
+            <div v-if="rescode.length > 1">
+                <span
+                    :class="{
+                        code: true,
+                        red: item.color === '红',
+                        green: item.color === '绿',
+                        blue: item.color === '蓝',
+                    }"
+                    v-for="item in rescode"
+                    :key="item.number"
+                >
+                    {{ item.number }}
+                </span>
+            </div>
+            <div v-else>暂无选号</div>
         </div>
+
+        <siji-sx></siji-sx>
+        <qqsh-sx></qqsh-sx>
+        <rgb-sx></rgb-sx>
     </div>
 </template>
 
 <script>
+import sijiSx from "@/components/SijiSx.vue";
+import qqshSx from "@/components/QqshSx.vue";
+import rgbSx from "@/components/Rgb.vue";
 export default {
+    components: { sijiSx, qqshSx, rgbSx },
     data() {
         return {
             /**
@@ -170,7 +181,7 @@ export default {
                 return filters[key].length === 0
             });
             // 空条件，则不执行后面的代码
-            if (isNullfilter) return;
+            if (isNullfilter) return [];
             // filters all elements passing the criteria
             return array.filter((item) => {
                 // dynamically validate all filter criteria
@@ -187,6 +198,9 @@ export default {
 </script>
  
 <style lang="scss" scoped>
+.selectcode {
+    padding-bottom: 50px;
+}
 .checkbox {
     width: 960px;
     margin: 10px auto;
