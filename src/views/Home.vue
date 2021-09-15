@@ -3,19 +3,27 @@
         <div class="newinfowrap">
             <div class="newinfo" v-loading="loading">
                 <p>最新开奖结果：{{ newInfo.time }}</p>
-                <span
-                    :class="{
-                        code: true,
-                        red: newInfo.colorArr[index] == 1,
-                        green: newInfo.colorArr[index] == 2,
-                        blue: newInfo.colorArr[index] == 3,
-                        ml: index == 6,
-                    }"
+
+                <div
+                    class="itemwrap"
                     v-for="(item, index) in newInfo.codeArr"
                     :key="item"
                 >
-                    {{ item }}
-                </span>
+                    <span
+                        :class="{
+                            code: true,
+                            red: newInfo.colorArr[index] == 1,
+                            green: newInfo.colorArr[index] == 2,
+                            blue: newInfo.colorArr[index] == 3,
+                            ml: index == 6,
+                        }"
+                    >
+                        {{ item }}
+                    </span>
+                    <span :class="{ newsx: true, ml: index == 6 }">
+                        {{ newInfo.chineseZodiac[index] | formatShengxiao }}
+                    </span>
+                </div>
             </div>
             <div>
                 <el-button size="small" type="primary" @click="getNewInfo">
@@ -86,6 +94,7 @@ export default {
                 this.newInfo = {
                     codeArr: codeArr,
                     colorArr: resData.color,
+                    chineseZodiac: resData.chineseZodiac,
                     time: resData.preDrawTime.substring(0, 11)
                 }
                 this.loading = false;
@@ -93,29 +102,6 @@ export default {
         }
     },
     filters: {
-        /**
-           * 特码大小：>=25为大，<=24为小
-           * 合大小：十位个位之和>=7为大，<=6为小
-           * 尾大小：个位数>=5为大，<=4为小
-           */
-        formatHdx: value => {
-            if (value == "49") {
-                return "和";
-            }
-            let hNum = Number(value.charAt(0)) + Number(value.charAt(1));
-            let newValue = hNum >= 7 ? "合大" : "合小";
-            return newValue;
-        },
-        formatHds: value => {
-            let hNum = Number(value.charAt(0)) + Number(value.charAt(1));
-            let newValue = hNum % 2 === 0 ? "合双" : "合单";
-            return newValue;
-        },
-        formatWdx: value => {
-            let wNum = Number(value.charAt(1));
-            let newValue = wNum >= 5 ? "尾大" : "尾小";
-            return newValue;
-        },
     }
 }
 </script>
@@ -207,11 +193,14 @@ export default {
     padding: 10px;
     box-sizing: border-box;
     min-height: 80px;
+    .itemwrap {
+        display: inline-block;
+    }
     p {
         padding-bottom: 10px;
     }
     .code {
-        display: inline-block;
+        display: block;
         width: 40px;
         height: 40px;
         border-radius: 50%;
@@ -221,6 +210,14 @@ export default {
         line-height: 40px;
         text-align: center;
         margin: 0px 3px;
+        line-height: 40px;
+        text-align: center;
+        margin: 0px 3px;
+    }
+    .newsx {
+        display: inline-block;
+        width: 40px;
+        text-align: center;
     }
     .red {
         background: red;

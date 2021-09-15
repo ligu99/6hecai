@@ -219,50 +219,6 @@ export default {
         this.loading = false;
     },
     filters: {
-        formatShengxiao: value => {
-            let newValue = ""
-            switch (value) {
-                case 1:
-                    newValue = "鼠";
-                    break
-                case 2:
-                    newValue = "牛";
-                    break
-                case 3:
-                    newValue = "虎";
-                    break
-                case 4:
-                    newValue = "兔";
-                    break
-                case 5:
-                    newValue = "龙";
-                    break
-                case 6:
-                    newValue = "蛇";
-                    break
-                case 7:
-                    newValue = "马";
-                    break
-                case 8:
-                    newValue = "羊";
-                    break
-                case 9:
-                    newValue = "猴";
-                    break
-                case 10:
-                    newValue = "鸡";
-                    break
-                case 11:
-                    newValue = "狗";
-                    break
-                case 12:
-                    newValue = "猪";
-                    break
-                default:
-                    newValue = ""
-            }
-            return newValue;
-        },
         formatWuxing: value => {
             let newValue = "";
             switch (value) {

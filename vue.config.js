@@ -41,6 +41,11 @@ module.exports = {
       .loader("svg-sprite-loader")
       .options({ symbolId: "icon-[name]" })
       .end();
+
+    config.plugin('html').tap(args => {
+      args[0].title = '六合彩_MarkSix';
+      return args;
+    })
   },
 
   devServer: {
