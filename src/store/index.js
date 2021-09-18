@@ -126,9 +126,13 @@ export default new Vuex.Store({
       { number: '15', color: '蓝' },
       { number: '27', color: '绿' },
       { number: '39', color: '绿' }],
-    }]
+    }],
+    nextTime: "/"
   },
   mutations: {
+    setNextTime(state, value) {
+      state.nextTime = value
+    }
   },
   actions: {
   },

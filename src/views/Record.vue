@@ -43,50 +43,21 @@
                     </span>
                 </template>
             </el-table-column>
-            <el-table-column label="五行">
-                <template slot-scope="scope">
-                    <span>
-                        {{ scope.row.wuXingArr[6] | formatWuxing }}
-                    </span>
-                </template>
-            </el-table-column>
-            <el-table-column label="家禽野兽">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.jiaYeArr[6] === 1 ? "家" : "野" }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="男女">
-                <template slot-scope="scope">
-                    <span>{{ scope.row.nanNvArr[6] === 1 ? "男" : "女" }}</span>
-                </template>
-            </el-table-column>
-            <el-table-column label="天地">
-                <template slot-scope="scope">
-                    <span>
-                        {{ scope.row.tianDiArr[6] === 1 ? "天" : "地" }}
-                    </span>
-                </template>
-            </el-table-column>
+
             <el-table-column label="四季">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.siJiArr[6] | formatSiji }}</span>
+                    <span>{{ scope.row.shengXiaoArr[6] | formatSiji }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="琴棋书画">
                 <template slot-scope="scope">
-                    <span>{{ scope.row.qqshArr[6] | formatQqsh }}</span>
+                    <span>{{ scope.row.shengXiaoArr[6] | formatQqsh }}</span>
                 </template>
             </el-table-column>
             <el-table-column label="三色">
                 <template slot-scope="scope">
                     <span>
-                        {{
-                            scope.row.sanSeArr[6] === 1
-                                ? "红肖"
-                                : scope.row.sanSeArr[6] === 2
-                                ? "蓝肖"
-                                : "绿肖"
-                        }}
+                        {{ scope.row.shengXiaoArr[6] | formatSanse }}
                     </span>
                 </template>
             </el-table-column>
@@ -155,7 +126,7 @@ export default {
             year: "2021",
             type: "1"
         });
-
+        /*
         // type: 2-五行
         let { result: { data: { bodyList: bodyList2 } } } = await postRequest("/smallSix/findSmallSixHistory.do", {
             year: "2021",
@@ -191,6 +162,8 @@ export default {
             year: "2021",
             type: "8"
         });
+        */
+
 
         let dataList = [];
         dataList = bodyList1.map((item, index) => {
@@ -205,13 +178,6 @@ export default {
                 preDrawCode: item.preDrawCode,//7个号码数组
                 shengXiaoArr: item.czAndFe,//7个号码对应生肖顺序数组
                 colorArr: item.color,//7个号码对应波色数组
-                wuXingArr: bodyList2[index].czAndFe,
-                jiaYeArr: bodyList3[index].czAndFe,
-                nanNvArr: bodyList4[index].czAndFe,
-                tianDiArr: bodyList5[index].czAndFe,
-                siJiArr: bodyList6[index].czAndFe,
-                qqshArr: bodyList7[index].czAndFe,
-                sanSeArr: bodyList8[index].czAndFe,
             }
         });
 
@@ -219,66 +185,41 @@ export default {
         this.loading = false;
     },
     filters: {
-        formatWuxing: value => {
-            let newValue = "";
-            switch (value) {
-                case 1:
-                    newValue = "金";
-                    break;
-                case 2:
-                    newValue = "木";
-                    break;
-                case 3:
-                    newValue = "水";
-                    break;
-                case 4:
-                    newValue = "火";
-                    break;
-                case 5:
-                    newValue = "土";
-                    break;
-                default:
-                    newValue = "";
-            }
-            return newValue;
-        },
+
         formatSiji: value => {
             let newValue = "";
-            switch (value) {
-                case 1:
-                    newValue = "春";
-                    break;
-                case 2:
-                    newValue = "夏";
-                    break;
-                case 3:
-                    newValue = "秋";
-                    break;
-                case 4:
-                    newValue = "冬";
-                    break;
-                default:
-                    newValue = "";
+            if (value === 3 || value === 4 || value === 5) {
+                newValue = "春"
+            } else if (value === 6 || value === 7 || value === 8) {
+                newValue = "夏"
+            } else if (value === 9 || value === 10 || value === 11) {
+                newValue = "秋"
+            } else {
+                newValue = "冬"
             }
             return newValue;
         },
         formatQqsh: value => {
             let newValue = "";
-            switch (value) {
-                case 1:
-                    newValue = "琴";
-                    break;
-                case 2:
-                    newValue = "棋";
-                    break;
-                case 3:
-                    newValue = "书";
-                    break;
-                case 4:
-                    newValue = "画";
-                    break;
-                default:
-                    newValue = "";
+            if (value === 4 || value === 6 || value === 10) {
+                newValue = "琴"
+            } else if (value === 1 || value === 2 || value === 11) {
+                newValue = "棋"
+            } else if (value === 3 || value === 5 || value === 7) {
+                newValue = "书"
+            } else {
+                newValue = "画"
+            }
+            return newValue;
+        },
+        formatSanse: value => {
+            let newValue = "";
+            if (value === 1 || value === 4 || value === 7 || value === 10) {
+                newValue = "红肖"
+            } else if (value === 2 || value === 5 || value === 8 || value === 11) {
+                newValue = "绿肖"
+            } else {
+                newValue = "蓝肖"
             }
             return newValue;
         },

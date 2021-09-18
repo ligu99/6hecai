@@ -3,7 +3,6 @@
         <div class="newinfowrap">
             <div class="newinfo" v-loading="loading">
                 <p>最新开奖结果：{{ newInfo.time }}</p>
-
                 <div
                     class="itemwrap"
                     v-for="(item, index) in newInfo.codeArr"
@@ -30,6 +29,7 @@
                     刷新
                 </el-button>
             </div>
+            <div class="next">下期开奖时间：{{ nextTime }}</div>
         </div>
 
         <div class="sxlist">
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 
 // @ is an alias to /src
 import { getRequest } from "@/api/baseRequest.js";
@@ -75,12 +75,13 @@ export default {
         }
     },
     computed: {
-        ...mapState(['sxArr']),
+        ...mapState(['sxArr', "nextTime"]),
     },
     created() {
         this.getNewInfo();
     },
     methods: {
+        ...mapMutations(["setNextTime"]),
         getNewInfo() {
             this.loading = true;
             getRequest("/smallSix/findSmallSixInfo.do").then(res => {
@@ -95,8 +96,10 @@ export default {
                     codeArr: codeArr,
                     colorArr: resData.color,
                     chineseZodiac: resData.chineseZodiac,
-                    time: resData.preDrawTime.substring(0, 11)
+                    time: resData.preDrawTime.substring(0, 11),
+                    nextTime: resData.drawTime.substring(0, 11),
                 }
+                this.setNextTime(resData.drawTime.substring(0, 11));
                 this.loading = false;
             })
         }
@@ -136,20 +139,26 @@ export default {
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            color: #fff;
+            color: rgba($color: #000000, $alpha: 0.8);
             font-size: 24px;
             font-weight: 600;
-            line-height: 50px;
+            line-height: 45px;
             margin: 5px 0px;
         }
         .red {
-            background: red;
+            // background: red;
+            background: url("~@/assets/r.png") center no-repeat;
+            background-size: contain;
         }
         .green {
-            background: green;
+            // background: green;
+            background: url("~@/assets/g.png") center no-repeat;
+            background-size: contain;
         }
         .blue {
-            background: blue;
+            // background: blue;
+            background: url("~@/assets/b.png") center no-repeat;
+            background-size: contain;
         }
     }
 }
@@ -185,6 +194,11 @@ export default {
     margin: 10px auto 30px;
     display: flex;
     flex-direction: row;
+    position: relative;
+    .next {
+        position: absolute;
+        right: 0;
+    }
 }
 .newinfo {
     width: 450px;
@@ -204,13 +218,13 @@ export default {
         width: 40px;
         height: 40px;
         border-radius: 50%;
-        color: #fff;
-        font-size: 24px;
+        color: #000;
+        font-size: 20px;
         font-weight: 600;
         line-height: 40px;
         text-align: center;
         margin: 0px 3px;
-        line-height: 40px;
+        line-height: 35px;
         text-align: center;
         margin: 0px 3px;
     }
@@ -220,13 +234,17 @@ export default {
         text-align: center;
     }
     .red {
-        background: red;
+        // background: red;
+        background: url("~@/assets/r.png") center no-repeat;
+        background-size: contain;
     }
     .green {
-        background: green;
+        background: url("~@/assets/g.png") center no-repeat;
+        background-size: contain;
     }
     .blue {
-        background: blue;
+        background: url("~@/assets/b.png") center no-repeat;
+        background-size: contain;
     }
     .ml {
         margin-left: 30px;
